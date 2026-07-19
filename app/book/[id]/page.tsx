@@ -3,6 +3,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import ProgressLogger from "@/components/ProgressLogger";
 import BookMetaEditor from "@/components/BookMetaEditor";
+import QuotesEditor from "@/components/QuotesEditor";
 
 export default async function BookDetailPage({
   params,
@@ -48,6 +49,11 @@ export default async function BookDetailPage({
       <section className="mt-8">
         <h2 className="mb-3 text-lg font-medium">Rating &amp; Review</h2>
         <BookMetaEditor book={book} />
+      </section>
+
+      <section className="mt-8">
+        <h2 className="mb-3 text-lg font-medium">Quotes</h2>
+        <QuotesEditor bookId={book.id} initialQuotes={book.quotes} />
       </section>
     </main>
   );
