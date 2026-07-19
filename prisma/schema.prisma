@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  author      String
+  isbn        String?
+  coverUrl    String?
+  pageCount   Int?
+  format      String   @default("physical") // physical | ebook | audiobook
+  shelf       String   @default("want_to_read") // want_to_read | reading | read | dnf
+  rating      Int?     // 1-5
+  moodTags    String[] @default([])
+  paceTag     String?  // fast | medium | slow
+  reviewText  String?
+  dateAdded   DateTime @default(now())
+  dateStarted DateTime?
+  dateFinished DateTime?
+
+  progressLogs ProgressLog[]
+  quotes       Quote[]
+}
+
+model ProgressLog {
+  id         String   @id @default(cuid())
+  bookId     String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  timestamp  DateTime @default(now())
+  pageOrPercent Int
+  sessionMinutes Int?
+}
+
+model Quote {
+  id      String  @id @default(cuid())
+  bookId  String
+  book    Book    @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  page    Int?
+  text    String
+  note    String?
+}
