@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(toCsv(books), {
       headers: {
         "Content-Type": "text/csv",
-        "Content-Disposition": "attachment; filename=spines-library.csv",
+        "Content-Disposition": "attachment; filename=epiloggd-library.csv",
       },
     });
   }
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
   return new NextResponse(JSON.stringify(books, null, 2), {
     headers: {
       "Content-Type": "application/json",
-      "Content-Disposition": "attachment; filename=spines-library.json",
+      "Content-Disposition": "attachment; filename=epiloggd-library.json",
     },
   });
 }

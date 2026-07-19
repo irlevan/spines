@@ -1,6 +1,6 @@
-# spines
+# epiloggd
 
-Personal reading-progress tracker (Goodreads/StoryGraph-inspired). Next.js (App Router) + TypeScript, Tailwind CSS, Prisma + Postgres (Neon), deployed on Vercel, installable as a PWA. See [spines-claude-code-brief.md](./spines-claude-code-brief.md) for the full project brief.
+Personal reading-progress tracker (Goodreads/StoryGraph-inspired). Next.js (App Router) + TypeScript, Tailwind CSS, Prisma + Postgres (Neon), deployed on Vercel, installable as a PWA. See [epiloggd-claude-code-brief.md](./epiloggd-claude-code-brief.md) for the full project brief.
 
 ## Getting Started
 

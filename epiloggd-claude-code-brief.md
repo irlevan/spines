@@ -1,4 +1,4 @@
-# Spines — Claude Code Project Brief
+# Epiloggd — Claude Code Project Brief
 
 Everything needed to kick this off in VS Code with Claude Code. Follow the setup steps first (one-time, ~15 min), then hand Claude Code the kickoff prompt at the bottom.
 
@@ -21,9 +21,9 @@ Everything needed to kick this off in VS Code with Claude Code. Follow the setup
 
 ## 2. One-time account setup (do this before opening Claude Code)
 
-1. **Neon** — go to neon.tech, sign up free, create a project called `spines`. Copy the connection string it gives you (looks like `postgresql://user:pass@host/dbname?sslmode=require`).
+1. **Neon** — go to neon.tech, sign up free, create a project called `epiloggd`. Copy the connection string it gives you (looks like `postgresql://user:pass@host/dbname?sslmode=require`).
 2. **Vercel** — go to vercel.com, sign up free (can link your GitHub account now, useful later for deploys).
-3. **GitHub** — create an empty repo called `spines` if you want version control from day one (recommended).
+3. **GitHub** — create an empty repo called `epiloggd` if you want version control from day one (recommended).
 
 Nothing else needs signing up for yet — Open Library's API is keyless.
 
@@ -52,7 +52,7 @@ That's the only secret Phase 1 needs.
 ## 5. Target folder structure
 
 ```
-spines/
+epiloggd/
 ├─ app/
 │  ├─ layout.tsx
 │  ├─ page.tsx                 # dashboard / stats

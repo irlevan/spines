@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spines",
+  title: "Epiloggd",
   description: "Personal reading-progress tracker",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Spines",
+    title: "Epiloggd",
   },
   icons: {
     icon: [
