@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import ProgressLogger from "@/components/ProgressLogger";
+import BookMetaEditor from "@/components/BookMetaEditor";
 
 export default async function BookDetailPage({
   params,
@@ -42,6 +43,11 @@ export default async function BookDetailPage({
       <section className="mt-8">
         <h2 className="mb-3 text-lg font-medium">Progress</h2>
         <ProgressLogger bookId={book.id} initialLogs={book.progressLogs} />
+      </section>
+
+      <section className="mt-8">
+        <h2 className="mb-3 text-lg font-medium">Rating &amp; Review</h2>
+        <BookMetaEditor book={book} />
       </section>
     </main>
   );
