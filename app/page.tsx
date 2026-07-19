@@ -34,11 +34,11 @@ export default async function DashboardPage() {
     <main className="mx-auto max-w-4xl px-6 py-10">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <div className="flex gap-3 text-xs text-black/50 dark:text-white/50">
-          <a href="/api/export?format=json" className="hover:underline">
+        <div className="flex gap-3 text-xs text-muted">
+          <a href="/api/export?format=json" className="hover:text-accent hover:underline">
             Export JSON
           </a>
-          <a href="/api/export?format=csv" className="hover:underline">
+          <a href="/api/export?format=csv" className="hover:text-accent hover:underline">
             Export CSV
           </a>
         </div>

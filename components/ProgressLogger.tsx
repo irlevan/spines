@@ -69,42 +69,42 @@ export default function ProgressLogger({ bookId, initialLogs }: ProgressLoggerPr
   return (
     <div className="flex flex-col gap-4">
       <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2">
-        <label className="flex flex-col text-xs text-black/60 dark:text-white/60">
+        <label className="flex flex-col text-xs text-muted">
           Page or %
           <input
             type="number"
             value={pageOrPercent}
             onChange={(e) => setPageOrPercent(e.target.value)}
             required
-            className="w-24 rounded border border-black/10 bg-transparent px-2 py-1 text-sm dark:border-white/10"
+            className="w-24 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
           />
         </label>
-        <label className="flex flex-col text-xs text-black/60 dark:text-white/60">
+        <label className="flex flex-col text-xs text-muted">
           Minutes (optional)
           <input
             type="number"
             value={sessionMinutes}
             onChange={(e) => setSessionMinutes(e.target.value)}
-            className="w-28 rounded border border-black/10 bg-transparent px-2 py-1 text-sm dark:border-white/10"
+            className="w-28 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
           />
         </label>
         <button
           type="submit"
           disabled={submitting}
-          className="rounded bg-foreground px-3 py-1.5 text-sm font-medium text-background disabled:opacity-50"
+          className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground disabled:opacity-50"
         >
           Log progress
         </button>
       </form>
 
       {pace && (pace.perDay !== null || pace.perHour !== null) ? (
-        <p className="text-sm text-black/60 dark:text-white/60">
+        <p className="text-sm text-muted">
           Pace: {pace.perDay !== null ? `${pace.perDay.toFixed(1)} units/day` : null}
           {pace.perDay !== null && pace.perHour !== null ? " · " : null}
           {pace.perHour !== null ? `${pace.perHour.toFixed(1)} units/hour` : null}
         </p>
       ) : (
-        <p className="text-sm text-black/40 dark:text-white/40">
+        <p className="text-sm text-subtle">
           Not enough data yet to calculate pace — log entries with an hour or more
           between them, or include minutes spent reading.
         </p>
@@ -114,12 +114,9 @@ export default function ProgressLogger({ bookId, initialLogs }: ProgressLoggerPr
         {[...logs]
           .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
           .map((log) => (
-            <li
-              key={log.id}
-              className="flex justify-between border-b border-black/5 py-1 dark:border-white/5"
-            >
+            <li key={log.id} className="flex justify-between border-b border-line py-1">
               <span>{log.pageOrPercent}</span>
-              <span className="text-black/40 dark:text-white/40">
+              <span className="text-subtle">
                 {formatDate(log.timestamp)}
                 {log.sessionMinutes ? ` · ${log.sessionMinutes} min` : ""}
               </span>

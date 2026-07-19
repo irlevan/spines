@@ -68,9 +68,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
-          Rating
-        </p>
+        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Rating</p>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((value) => (
             <button
@@ -78,9 +76,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
               type="button"
               onClick={() => handleRate(value)}
               aria-label={`Rate ${value} star${value > 1 ? "s" : ""}`}
-              className={`text-2xl leading-none ${
-                value <= rating ? "text-yellow-500" : "text-black/20 dark:text-white/20"
-              }`}
+              className={`text-2xl leading-none ${value <= rating ? "text-accent" : "text-line"}`}
             >
               ★
             </button>
@@ -89,21 +85,19 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
-          Mood tags
-        </p>
+        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Mood tags</p>
         <div className="flex flex-wrap items-center gap-2">
           {moodTags.map((tag) => (
             <span
               key={tag}
-              className="flex items-center gap-1 rounded-full border border-black/10 px-2 py-0.5 text-xs dark:border-white/10"
+              className="flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-xs"
             >
               {tag}
               <button
                 type="button"
                 onClick={() => removeMoodTag(tag)}
                 aria-label={`Remove ${tag}`}
-                className="text-black/40 hover:text-black/70 dark:text-white/40 dark:hover:text-white/70"
+                className="text-subtle hover:text-accent"
               >
                 ×
               </button>
@@ -114,25 +108,21 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
             onChange={(e) => setMoodInput(e.target.value)}
             onKeyDown={addMoodTag}
             placeholder="Add a tag, press Enter"
-            className="w-40 rounded border border-black/10 bg-transparent px-2 py-1 text-xs dark:border-white/10"
+            className="w-40 rounded border border-line bg-surface px-2 py-1 text-xs text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
           />
         </div>
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
-          Pace
-        </p>
+        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Pace</p>
         <select
           value={paceTag}
           onChange={(e) => handlePaceTag(e.target.value)}
-          className="rounded border border-black/10 bg-transparent px-2 py-1 text-sm dark:border-white/10"
+          className="rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
         >
-          <option value="" className="text-black">
-            —
-          </option>
+          <option value="">—</option>
           {PACE_TAGS.map((tag) => (
-            <option key={tag} value={tag} className="text-black">
+            <option key={tag} value={tag}>
               {tag}
             </option>
           ))}
@@ -140,22 +130,20 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
-          Review
-        </p>
+        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Review</p>
         <textarea
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
           onBlur={saveReview}
           rows={4}
           placeholder="What did you think?"
-          className="w-full rounded border border-black/10 bg-transparent px-2 py-1.5 text-sm dark:border-white/10"
+          className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
         />
         {reviewText !== savedReview ? (
           <button
             type="button"
             onClick={saveReview}
-            className="mt-2 rounded bg-foreground px-3 py-1.5 text-xs font-medium text-background"
+            className="mt-2 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground"
           >
             Save review
           </button>

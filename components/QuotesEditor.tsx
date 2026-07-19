@@ -49,7 +49,7 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
           placeholder="Quote text"
           rows={2}
           required
-          className="w-full rounded border border-black/10 bg-transparent px-2 py-1.5 text-sm dark:border-white/10"
+          className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
         />
         <div className="flex gap-2">
           <input
@@ -57,19 +57,19 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
             value={page}
             onChange={(e) => setPage(e.target.value)}
             placeholder="Page (optional)"
-            className="w-32 rounded border border-black/10 bg-transparent px-2 py-1 text-sm dark:border-white/10"
+            className="w-32 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
           />
           <input
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Note (optional)"
-            className="flex-1 rounded border border-black/10 bg-transparent px-2 py-1 text-sm dark:border-white/10"
+            className="flex-1 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
           />
         </div>
         <button
           type="submit"
           disabled={submitting}
-          className="w-fit rounded bg-foreground px-3 py-1.5 text-sm font-medium text-background disabled:opacity-50"
+          className="w-fit rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground disabled:opacity-50"
         >
           Add quote
         </button>
@@ -77,9 +77,9 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
 
       <ul className="flex flex-col gap-3">
         {quotes.map((quote) => (
-          <li key={quote.id} className="rounded border border-black/10 p-3 text-sm dark:border-white/10">
+          <li key={quote.id} className="rounded-lg border border-line bg-surface p-3 text-sm">
             <p className="italic">&ldquo;{quote.text}&rdquo;</p>
-            <p className="mt-1 text-xs text-black/40 dark:text-white/40">
+            <p className="mt-1 text-xs text-subtle">
               {quote.page ? `p. ${quote.page}` : null}
               {quote.page && quote.note ? " · " : null}
               {quote.note ?? null}

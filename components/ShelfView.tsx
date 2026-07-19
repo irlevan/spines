@@ -70,27 +70,27 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by title or author…"
-          className="flex-1 rounded border border-black/10 bg-transparent px-3 py-2 text-sm dark:border-white/10"
+          className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm placeholder:text-subtle focus:border-accent focus:outline-none"
         />
         <button
           type="submit"
           disabled={searching}
-          className="rounded bg-foreground px-4 py-2 text-sm font-medium text-background disabled:opacity-50"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground disabled:opacity-50"
         >
           {searching ? "Searching…" : "Search"}
         </button>
       </form>
 
       {results.length > 0 ? (
-        <div className="flex flex-col gap-2 rounded-lg border border-black/10 p-3 dark:border-white/10">
+        <div className="flex flex-col gap-2 rounded-xl border border-line bg-surface p-3">
           {results.map((r) => (
             <div key={r.openLibraryKey} className="flex items-center justify-between gap-3 text-sm">
               <span>
-                {r.title} <span className="text-black/50 dark:text-white/50">— {r.author}</span>
+                {r.title} <span className="text-muted">— {r.author}</span>
               </span>
               <button
                 onClick={() => handleAdd(r)}
-                className="shrink-0 rounded border border-black/10 px-2 py-1 text-xs hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10"
+                className="shrink-0 rounded-lg border border-line px-2 py-1 text-xs hover:border-accent hover:text-accent"
               >
                 Add
               </button>
@@ -102,7 +102,7 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {SHELVES.map((shelf) => (
           <div key={shelf.value} className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
               {shelf.label} ({books.filter((b) => b.shelf === shelf.value).length})
             </h2>
             <div className="flex flex-col gap-3">

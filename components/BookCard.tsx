@@ -18,8 +18,8 @@ interface BookCardProps {
 
 export default function BookCard({ book, onShelfChange }: BookCardProps) {
   return (
-    <div className="flex gap-3 rounded-lg border border-black/10 p-3 dark:border-white/10">
-      <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded bg-black/5 dark:bg-white/5">
+    <div className="flex gap-3 rounded-xl border border-line bg-surface p-3 transition-colors hover:border-accent/40">
+      <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-md bg-line">
         {book.coverUrl ? (
           <Image
             src={book.coverUrl}
@@ -32,21 +32,19 @@ export default function BookCard({ book, onShelfChange }: BookCardProps) {
       </div>
       <div className="flex flex-1 flex-col justify-between">
         <div>
-          <Link href={`/book/${book.id}`} className="font-medium hover:underline">
+          <Link href={`/book/${book.id}`} className="font-medium hover:text-accent hover:underline">
             {book.title}
           </Link>
-          <p className="text-sm text-black/60 dark:text-white/60">{book.author}</p>
-          {book.pageCount ? (
-            <p className="text-xs text-black/40 dark:text-white/40">{book.pageCount} pages</p>
-          ) : null}
+          <p className="text-sm text-muted">{book.author}</p>
+          {book.pageCount ? <p className="text-xs text-subtle">{book.pageCount} pages</p> : null}
         </div>
         <select
           value={book.shelf}
           onChange={(e) => onShelfChange(book.id, e.target.value)}
-          className="mt-2 w-fit rounded border border-black/10 bg-transparent px-2 py-1 text-xs dark:border-white/10"
+          className="mt-2 w-fit rounded border border-line bg-transparent px-2 py-1 text-xs text-foreground focus:border-accent focus:outline-none"
         >
           {SHELVES.map((s) => (
-            <option key={s.value} value={s.value} className="text-black">
+            <option key={s.value} value={s.value}>
               {s.label}
             </option>
           ))}
