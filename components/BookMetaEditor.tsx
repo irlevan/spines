@@ -9,6 +9,11 @@ interface BookMetaEditorProps {
   book: Book;
 }
 
+function toDateInput(d: Date | string | null) {
+  if (!d) return "";
+  return new Date(d).toISOString().slice(0, 10);
+}
+
 async function patchBook(bookId: string, data: Record<string, unknown>) {
   await fetch(`/api/books/${bookId}`, {
     method: "PATCH",
@@ -24,6 +29,8 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
   const [paceTag, setPaceTag] = useState(book.paceTag ?? "");
   const [reviewText, setReviewText] = useState(book.reviewText ?? "");
   const [savedReview, setSavedReview] = useState(book.reviewText ?? "");
+  const [dateStarted, setDateStarted] = useState(toDateInput(book.dateStarted));
+  const [dateFinished, setDateFinished] = useState(toDateInput(book.dateFinished));
 
   // Serialize PATCH requests so two edits fired close together (e.g. adding two
   // mood tags in a row) can't resolve out of order and have the earlier one
@@ -65,8 +72,42 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
     queuePatch({ reviewText });
   }
 
+  function handleDateStarted(value: string) {
+    setDateStarted(value);
+    queuePatch({ dateStarted: value || null });
+  }
+
+  function handleDateFinished(value: string) {
+    setDateFinished(value);
+    queuePatch({ dateFinished: value || null });
+  }
+
   return (
     <div className="flex flex-col gap-6">
+      <div>
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Dates</p>
+        <div className="flex flex-wrap gap-4">
+          <label className="flex flex-col gap-1 text-xs text-muted">
+            Started
+            <input
+              type="date"
+              value={dateStarted}
+              onChange={(e) => handleDateStarted(e.target.value)}
+              className="input rounded-lg px-2.5 py-1.5 text-sm text-foreground"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-xs text-muted">
+            Finished
+            <input
+              type="date"
+              value={dateFinished}
+              onChange={(e) => handleDateFinished(e.target.value)}
+              className="input rounded-lg px-2.5 py-1.5 text-sm text-foreground"
+            />
+          </label>
+        </div>
+      </div>
+
       <div>
         <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Rating</p>
         <div className="flex gap-0.5">
@@ -77,7 +118,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
               onClick={() => handleRate(value)}
               aria-label={`Rate ${value} star${value > 1 ? "s" : ""}`}
               className={`text-3xl leading-none transition-transform hover:scale-110 ${
-                value <= rating ? "text-accent" : "text-line"
+                value <= rating ? "text-ribbon" : "text-line"
               }`}
             >
               ★
@@ -99,7 +140,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
                 type="button"
                 onClick={() => removeMoodTag(tag)}
                 aria-label={`Remove ${tag}`}
-                className="text-subtle hover:text-accent"
+                className="text-subtle hover:text-ribbon"
               >
                 ×
               </button>
@@ -145,7 +186,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
           <button
             type="button"
             onClick={saveReview}
-            className="btn-accent mt-2 rounded-lg px-3.5 py-1.5 text-xs font-medium"
+            className="btn-ribbon mt-2 rounded-lg px-3.5 py-1.5 text-xs font-medium"
           >
             Save review
           </button>

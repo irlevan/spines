@@ -1,3 +1,19 @@
+interface ProgressLike {
+  percent: number;
+  timestamp: Date | string;
+}
+
+// Every ProgressLog is stored as a normalized 0-100 percent (see
+// resolvePercent in lib/progress.ts), regardless of whether the reader typed
+// a page number or a percent when logging it. This just grabs the latest one.
+export function latestProgressPercent(logs: ProgressLike[]): number {
+  if (logs.length === 0) return 0;
+  const latest = [...logs].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  )[0];
+  return Math.max(0, Math.min(100, latest.percent));
+}
+
 function dayKey(date: Date | string): string {
   return new Date(date).toISOString().slice(0, 10);
 }

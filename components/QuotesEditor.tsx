@@ -69,7 +69,7 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
         <button
           type="submit"
           disabled={submitting}
-          className="btn-accent w-fit rounded-lg px-3.5 py-1.5 text-sm font-medium disabled:opacity-50"
+          className="btn-ribbon w-fit rounded-lg px-3.5 py-1.5 text-sm font-medium disabled:opacity-50"
         >
           Add quote
         </button>

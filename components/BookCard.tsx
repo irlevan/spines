@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Book } from "@prisma/client";
+import FavoriteButton from "./FavoriteButton";
 
 export const SHELVES: { value: string; label: string }[] = [
   { value: "want_to_read", label: "Want to Read" },
@@ -14,12 +16,63 @@ export const SHELVES: { value: string; label: string }[] = [
 interface BookCardProps {
   book: Book;
   onShelfChange: (bookId: string, shelf: string) => void;
+  onRemove: (bookId: string) => void;
+  onFavoriteToggle?: (bookId: string, favorite: boolean) => void;
+  dragHandle?: React.ReactNode;
 }
 
-export default function BookCard({ book, onShelfChange }: BookCardProps) {
+export default function BookCard({
+  book,
+  onShelfChange,
+  onRemove,
+  onFavoriteToggle,
+  dragHandle,
+}: BookCardProps) {
+  const [confirming, setConfirming] = useState(false);
+
   return (
-    <div className="card card-hover flex gap-3 p-3">
-      <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-surface-2 shadow-sm">
+    <div className="card card-hover group relative flex gap-3 p-3">
+      {dragHandle}
+      {confirming ? (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-[0.875rem] bg-surface/95 p-3 text-center backdrop-blur-sm">
+          <p className="text-xs text-muted">Remove &ldquo;{book.title}&rdquo; for good?</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => onRemove(book.id)}
+              className="rounded-md bg-danger px-2.5 py-1 text-xs font-medium text-on-ribbon"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirming(false)}
+              className="rounded-md border border-line px-2.5 py-1 text-xs"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setConfirming(true)}
+          aria-label={`Remove ${book.title}`}
+          className="absolute right-2 top-2 z-[1] rounded-full p-1 text-subtle opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
+        >
+          <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+            <path
+              d="M5 6h10M8.5 6V4.5h3V6M6 6l.5 9.5a1 1 0 0 0 1 .95h5a1 1 0 0 0 1-.95L14 6"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
+      <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-surface-2">
         {book.coverUrl ? (
           <Image
             src={book.coverUrl}
@@ -29,21 +82,28 @@ export default function BookCard({ book, onShelfChange }: BookCardProps) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center font-display text-xs text-subtle">
+          <div className="flex h-full items-center justify-center font-display text-xs italic text-subtle">
             No cover
           </div>
         )}
       </div>
       <div className="flex flex-1 flex-col justify-between">
         <div>
-          <Link
-            href={`/book/${book.id}`}
-            className="font-medium leading-snug transition-colors hover:text-accent"
-          >
-            {book.title}
-          </Link>
-          <p className="text-sm text-muted">{book.author}</p>
-          {book.pageCount ? <p className="text-xs text-subtle">{book.pageCount} pages</p> : null}
+          <div className="flex items-start gap-1.5">
+            <Link
+              href={`/book/${book.id}`}
+              className="line-clamp-2 font-medium leading-snug transition-colors hover:text-ribbon"
+            >
+              {book.title}
+            </Link>
+            <FavoriteButton
+              bookId={book.id}
+              initialFavorite={book.favorite}
+              className="mt-0.5 shrink-0"
+              onToggle={onFavoriteToggle}
+            />
+          </div>
+          <p className="line-clamp-1 text-sm text-muted">{book.author}</p>
         </div>
         <select
           value={book.shelf}

@@ -15,12 +15,14 @@ model Book {
   isbn        String?
   coverUrl    String?
   pageCount   Int?
+  publisher   String?
   format      String   @default("physical") // physical | ebook | audiobook
   shelf       String   @default("want_to_read") // want_to_read | reading | read | dnf
   rating      Int?     // 1-5
   moodTags    String[] @default([])
   paceTag     String?  // fast | medium | slow
   reviewText  String?
+  favorite    Boolean  @default(false)
   dateAdded   DateTime @default(now())
   dateStarted DateTime?
   dateFinished DateTime?
@@ -34,7 +36,7 @@ model ProgressLog {
   bookId     String
   book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   timestamp  DateTime @default(now())
-  pageOrPercent Int
+  percent    Float
   sessionMinutes Int?
 }
 

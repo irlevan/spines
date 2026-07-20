@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import NavBar from "@/components/NavBar";
 import "./globals.css";
 
@@ -13,10 +13,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const fraunces = Fraunces({
+const instrumentSerif = Instrument_Serif({
   variable: "--font-display",
   subsets: ["latin"],
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -39,8 +40,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf5ee" },
-    { media: "(prefers-color-scheme: dark)", color: "#1b1611" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f6f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#121310" },
   ],
 };
 
@@ -52,12 +53,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <NavBar />
-        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,var(--glow),transparent)]" />
-        {children}
+      <body className="min-h-full bg-background font-sans text-foreground">
+        <div className="flex min-h-full flex-col md:flex-row">
+          <NavBar />
+          <div className="min-w-0 flex-1">{children}</div>
+        </div>
       </body>
     </html>
   );

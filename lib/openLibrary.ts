@@ -41,3 +41,45 @@ export async function searchOpenLibrary(query: string): Promise<OpenLibraryResul
     openLibraryKey: doc.key,
   }));
 }
+
+export interface OpenLibraryEdition {
+  editionKey: string;
+  coverUrl: string | null;
+  pageCount: number | null;
+  publisher: string | null;
+  publishDate: string | null;
+  isbn: string | null;
+}
+
+interface OpenLibraryEditionEntry {
+  key: string;
+  covers?: number[];
+  number_of_pages?: number;
+  publishers?: string[];
+  publish_date?: string;
+  isbn_13?: string[];
+  isbn_10?: string[];
+}
+
+// A "work" (e.g. /works/OL12345W) can have many published editions with
+// different page counts, covers, and publishers. This lists them so the
+// reader can pick the physical copy they actually own.
+export async function getEditions(workKey: string): Promise<OpenLibraryEdition[]> {
+  const res = await fetch(`https://openlibrary.org${workKey}/editions.json?limit=25`);
+  if (!res.ok) {
+    throw new Error(`Open Library editions lookup failed: ${res.status}`);
+  }
+
+  const data: { entries: OpenLibraryEditionEntry[] } = await res.json();
+
+  return data.entries
+    .map((entry) => ({
+      editionKey: entry.key,
+      coverUrl: entry.covers?.[0] ? `${COVERS_URL}/${entry.covers[0]}-M.jpg` : null,
+      pageCount: entry.number_of_pages ?? null,
+      publisher: entry.publishers?.[0] ?? null,
+      publishDate: entry.publish_date ?? null,
+      isbn: entry.isbn_13?.[0] ?? entry.isbn_10?.[0] ?? null,
+    }))
+    .filter((edition) => edition.coverUrl || edition.pageCount || edition.publisher);
+}

@@ -13,6 +13,7 @@ const UPDATABLE_FIELDS = [
   "moodTags",
   "paceTag",
   "reviewText",
+  "favorite",
   "dateStarted",
   "dateFinished",
 ] as const;

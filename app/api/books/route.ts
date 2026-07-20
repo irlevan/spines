@@ -21,14 +21,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { title, author, isbn, coverUrl, pageCount, format, shelf } = body;
+  const { title, author, isbn, coverUrl, pageCount, publisher, format, shelf } = body;
 
   if (!title || !author) {
     return NextResponse.json({ error: "title and author are required" }, { status: 400 });
   }
 
   const book = await prisma.book.create({
-    data: { title, author, isbn, coverUrl, pageCount, format, shelf },
+    data: { title, author, isbn, coverUrl, pageCount, publisher, format, shelf },
   });
 
   return NextResponse.json(book, { status: 201 });
