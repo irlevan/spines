@@ -41,7 +41,7 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <textarea
           value={text}
@@ -49,7 +49,7 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
           placeholder="Quote text"
           rows={2}
           required
-          className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
+          className="input w-full rounded-lg px-3 py-2 text-sm text-foreground"
         />
         <div className="flex gap-2">
           <input
@@ -57,19 +57,19 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
             value={page}
             onChange={(e) => setPage(e.target.value)}
             placeholder="Page (optional)"
-            className="w-32 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
+            className="input w-32 rounded-lg px-2.5 py-1.5 text-sm text-foreground"
           />
           <input
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Note (optional)"
-            className="flex-1 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
+            className="input flex-1 rounded-lg px-2.5 py-1.5 text-sm text-foreground"
           />
         </div>
         <button
           type="submit"
           disabled={submitting}
-          className="w-fit rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground disabled:opacity-50"
+          className="btn-accent w-fit rounded-lg px-3.5 py-1.5 text-sm font-medium disabled:opacity-50"
         >
           Add quote
         </button>
@@ -77,9 +77,9 @@ export default function QuotesEditor({ bookId, initialQuotes }: QuotesEditorProp
 
       <ul className="flex flex-col gap-3">
         {quotes.map((quote) => (
-          <li key={quote.id} className="rounded-lg border border-line bg-surface p-3 text-sm">
-            <p className="italic">&ldquo;{quote.text}&rdquo;</p>
-            <p className="mt-1 text-xs text-subtle">
+          <li key={quote.id} className="card p-4 text-sm">
+            <p className="font-display italic leading-relaxed">&ldquo;{quote.text}&rdquo;</p>
+            <p className="mt-2 text-xs text-subtle">
               {quote.page ? `p. ${quote.page}` : null}
               {quote.page && quote.note ? " · " : null}
               {quote.note ?? null}

@@ -1,44 +1,127 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf6f1;
-  --foreground: #2b241d;
-  --surface: #f3ece1;
-  --line: #e4d9c8;
-  --muted: #8a7c68;
-  --subtle: #a89c88;
-  --accent: #b5573a;
+  --background: #faf5ee;
+  --foreground: #2a2118;
+  --surface: #ffffff;
+  --surface-2: #f4ebde;
+  --line: #e8dcc8;
+  --muted: #8c7c64;
+  --subtle: #ab9c84;
+  --accent: #b0512f;
+  --accent-2: #c9703f;
   --accent-foreground: #fdf8f3;
+  --glow: rgba(176, 81, 47, 0.10);
+  --shadow-color: 30 24% 20%;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-line: var(--line);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
   --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #201a15;
-    --foreground: #f1e9dd;
-    --surface: #2a231c;
-    --line: #3d3327;
-    --muted: #a89c88;
-    --subtle: #786c5a;
-    --accent: #dd8a68;
-    --accent-foreground: #201a15;
+    --background: #1b1611;
+    --foreground: #f3ebdd;
+    --surface: #241d16;
+    --surface-2: #2c241a;
+    --line: #3d3225;
+    --muted: #ab9c84;
+    --subtle: #7c705c;
+    --accent: #e08a5c;
+    --accent-2: #ea9d6f;
+    --accent-foreground: #1b1611;
+    --glow: rgba(224, 138, 92, 0.08);
+    --shadow-color: 20 40% 3%;
   }
+}
+
+* {
+  border-color: var(--line);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.font-display {
+  font-family: var(--font-display), serif;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 8px 24px -12px hsl(var(--shadow-color) / 0.12);
+}
+
+.card-hover {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.08), 0 16px 32px -14px hsl(var(--shadow-color) / 0.22);
+}
+
+.btn-accent {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: var(--accent-foreground);
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.1), 0 6px 16px -6px rgba(176, 81, 47, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-accent:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px hsl(var(--shadow-color) / 0.12), 0 10px 22px -8px rgba(176, 81, 47, 0.5);
+}
+
+.btn-accent:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.input {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.35s ease both;
 }

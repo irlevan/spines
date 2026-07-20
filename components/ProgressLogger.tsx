@@ -67,38 +67,38 @@ export default function ProgressLogger({ bookId, initialLogs }: ProgressLoggerPr
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2">
-        <label className="flex flex-col text-xs text-muted">
+        <label className="flex flex-col gap-1 text-xs text-muted">
           Page or %
           <input
             type="number"
             value={pageOrPercent}
             onChange={(e) => setPageOrPercent(e.target.value)}
             required
-            className="w-24 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
+            className="input w-24 rounded-lg px-2 py-1.5 text-sm text-foreground"
           />
         </label>
-        <label className="flex flex-col text-xs text-muted">
+        <label className="flex flex-col gap-1 text-xs text-muted">
           Minutes (optional)
           <input
             type="number"
             value={sessionMinutes}
             onChange={(e) => setSessionMinutes(e.target.value)}
-            className="w-28 rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
+            className="input w-28 rounded-lg px-2 py-1.5 text-sm text-foreground"
           />
         </label>
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground disabled:opacity-50"
+          className="btn-accent rounded-lg px-3.5 py-1.5 text-sm font-medium disabled:opacity-50"
         >
           Log progress
         </button>
       </form>
 
       {pace && (pace.perDay !== null || pace.perHour !== null) ? (
-        <p className="text-sm text-muted">
+        <p className="rounded-lg bg-surface-2 px-3 py-2 text-sm text-muted">
           Pace: {pace.perDay !== null ? `${pace.perDay.toFixed(1)} units/day` : null}
           {pace.perDay !== null && pace.perHour !== null ? " · " : null}
           {pace.perHour !== null ? `${pace.perHour.toFixed(1)} units/hour` : null}
@@ -110,12 +110,12 @@ export default function ProgressLogger({ bookId, initialLogs }: ProgressLoggerPr
         </p>
       )}
 
-      <ul className="flex flex-col gap-1 text-sm">
+      <ul className="flex flex-col divide-y divide-line text-sm">
         {[...logs]
           .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
           .map((log) => (
-            <li key={log.id} className="flex justify-between border-b border-line py-1">
-              <span>{log.pageOrPercent}</span>
+            <li key={log.id} className="flex justify-between py-2">
+              <span className="font-medium">{log.pageOrPercent}</span>
               <span className="text-subtle">
                 {formatDate(log.timestamp)}
                 {log.sessionMinutes ? ` · ${log.sessionMinutes} min` : ""}

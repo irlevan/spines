@@ -64,33 +64,47 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       <form onSubmit={handleSearch} className="flex gap-2">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by title or author…"
-          className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm placeholder:text-subtle focus:border-accent focus:outline-none"
-        />
+        <div className="relative flex-1">
+          <svg
+            aria-hidden
+            viewBox="0 0 20 20"
+            fill="none"
+            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-subtle"
+          >
+            <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.6" />
+            <path d="M14 14L18 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by title or author…"
+            className="input w-full rounded-full py-2.5 pl-10 pr-4 text-sm placeholder:text-subtle"
+          />
+        </div>
         <button
           type="submit"
           disabled={searching}
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground disabled:opacity-50"
+          className="btn-accent shrink-0 rounded-full px-5 py-2.5 text-sm font-medium disabled:opacity-50"
         >
           {searching ? "Searching…" : "Search"}
         </button>
       </form>
 
       {results.length > 0 ? (
-        <div className="flex flex-col gap-2 rounded-xl border border-line bg-surface p-3">
+        <div className="card flex flex-col divide-y divide-line p-2">
           {results.map((r) => (
-            <div key={r.openLibraryKey} className="flex items-center justify-between gap-3 text-sm">
+            <div
+              key={r.openLibraryKey}
+              className="flex items-center justify-between gap-3 px-3 py-2.5 text-sm"
+            >
               <span>
                 {r.title} <span className="text-muted">— {r.author}</span>
               </span>
               <button
                 onClick={() => handleAdd(r)}
-                className="shrink-0 rounded-lg border border-line px-2 py-1 text-xs hover:border-accent hover:text-accent"
+                className="shrink-0 rounded-full border border-line px-3 py-1 text-xs font-medium transition-colors hover:border-accent hover:text-accent"
               >
                 Add
               </button>
@@ -99,18 +113,27 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {SHELVES.map((shelf) => (
           <div key={shelf.value} className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-              {shelf.label} ({books.filter((b) => b.shelf === shelf.value).length})
+            <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-subtle">
+              {shelf.label}
+              <span className="rounded-full bg-surface-2 px-1.5 py-0.5 text-[10px] font-medium text-muted">
+                {books.filter((b) => b.shelf === shelf.value).length}
+              </span>
             </h2>
             <div className="flex flex-col gap-3">
-              {books
-                .filter((b) => b.shelf === shelf.value)
-                .map((book) => (
-                  <BookCard key={book.id} book={book} onShelfChange={handleShelfChange} />
-                ))}
+              {books.filter((b) => b.shelf === shelf.value).length === 0 ? (
+                <div className="rounded-xl border border-dashed border-line p-4 text-center text-xs text-subtle">
+                  Empty
+                </div>
+              ) : (
+                books
+                  .filter((b) => b.shelf === shelf.value)
+                  .map((book) => (
+                    <BookCard key={book.id} book={book} onShelfChange={handleShelfChange} />
+                  ))
+              )}
             </div>
           </div>
         ))}

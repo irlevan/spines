@@ -19,9 +19,9 @@ export default async function BookDetailPage({
   if (!book) notFound();
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-10">
+    <main className="mx-auto max-w-3xl px-6 py-12">
       <div className="flex gap-6">
-        <div className="relative h-48 w-32 shrink-0 overflow-hidden rounded-lg bg-line">
+        <div className="relative h-48 w-32 shrink-0 overflow-hidden rounded-xl bg-surface-2 shadow-lg shadow-black/10">
           {book.coverUrl ? (
             <Image
               src={book.coverUrl}
@@ -30,29 +30,33 @@ export default async function BookDetailPage({
               sizes="128px"
               className="object-cover"
             />
-          ) : null}
+          ) : (
+            <div className="flex h-full items-center justify-center font-display text-xs text-subtle">
+              No cover
+            </div>
+          )}
         </div>
-        <div>
-          <h1 className="text-2xl font-semibold">{book.title}</h1>
-          <p className="text-muted">{book.author}</p>
-          {book.pageCount ? <p className="text-sm text-subtle">{book.pageCount} pages</p> : null}
+        <div className="flex flex-col justify-center">
+          <h1 className="font-display text-3xl font-semibold tracking-tight">{book.title}</h1>
+          <p className="mt-1 text-muted">{book.author}</p>
+          {book.pageCount ? <p className="mt-1 text-sm text-subtle">{book.pageCount} pages</p> : null}
         </div>
       </div>
 
-      <section className="mt-8 border-t border-line pt-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">Progress</h2>
+      <section className="card mt-10 p-6">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-subtle">Progress</h2>
         <ProgressLogger bookId={book.id} initialLogs={book.progressLogs} />
       </section>
 
-      <section className="mt-8 border-t border-line pt-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+      <section className="card mt-6 p-6">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-subtle">
           Rating &amp; Review
         </h2>
         <BookMetaEditor book={book} />
       </section>
 
-      <section className="mt-8 border-t border-line pt-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">Quotes</h2>
+      <section className="card mt-6 p-6">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-subtle">Quotes</h2>
         <QuotesEditor bookId={book.id} initialQuotes={book.quotes} />
       </section>
     </main>

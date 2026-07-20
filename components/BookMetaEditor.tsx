@@ -68,15 +68,17 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Rating</p>
-        <div className="flex gap-1">
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Rating</p>
+        <div className="flex gap-0.5">
           {[1, 2, 3, 4, 5].map((value) => (
             <button
               key={value}
               type="button"
               onClick={() => handleRate(value)}
               aria-label={`Rate ${value} star${value > 1 ? "s" : ""}`}
-              className={`text-2xl leading-none ${value <= rating ? "text-accent" : "text-line"}`}
+              className={`text-3xl leading-none transition-transform hover:scale-110 ${
+                value <= rating ? "text-accent" : "text-line"
+              }`}
             >
               ★
             </button>
@@ -85,12 +87,12 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Mood tags</p>
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Mood tags</p>
         <div className="flex flex-wrap items-center gap-2">
           {moodTags.map((tag) => (
             <span
               key={tag}
-              className="flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-xs"
+              className="flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-xs"
             >
               {tag}
               <button
@@ -108,17 +110,17 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
             onChange={(e) => setMoodInput(e.target.value)}
             onKeyDown={addMoodTag}
             placeholder="Add a tag, press Enter"
-            className="w-40 rounded border border-line bg-surface px-2 py-1 text-xs text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
+            className="input w-40 rounded-full px-3 py-1 text-xs text-foreground"
           />
         </div>
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Pace</p>
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Pace</p>
         <select
           value={paceTag}
           onChange={(e) => handlePaceTag(e.target.value)}
-          className="rounded border border-line bg-surface px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
+          className="input rounded-lg px-2.5 py-1.5 text-sm text-foreground"
         >
           <option value="">—</option>
           {PACE_TAGS.map((tag) => (
@@ -130,20 +132,20 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
       </div>
 
       <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-muted">Review</p>
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Review</p>
         <textarea
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
           onBlur={saveReview}
           rows={4}
           placeholder="What did you think?"
-          className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-foreground placeholder:text-subtle focus:border-accent focus:outline-none"
+          className="input w-full rounded-lg px-3 py-2 text-sm text-foreground"
         />
         {reviewText !== savedReview ? (
           <button
             type="button"
             onClick={saveReview}
-            className="mt-2 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground"
+            className="btn-accent mt-2 rounded-lg px-3.5 py-1.5 text-xs font-medium"
           >
             Save review
           </button>

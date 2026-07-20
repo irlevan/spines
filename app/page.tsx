@@ -31,14 +31,17 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-10">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <div className="flex gap-3 text-xs text-muted">
-          <a href="/api/export?format=json" className="hover:text-accent hover:underline">
+    <main className="mx-auto max-w-4xl px-6 py-12">
+      <div className="mb-10 flex items-end justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-widest text-subtle">Overview</p>
+          <h1 className="font-display text-3xl font-semibold tracking-tight">Dashboard</h1>
+        </div>
+        <div className="flex gap-4 text-xs text-muted">
+          <a href="/api/export?format=json" className="transition-colors hover:text-accent">
             Export JSON
           </a>
-          <a href="/api/export?format=csv" className="hover:text-accent hover:underline">
+          <a href="/api/export?format=csv" className="transition-colors hover:text-accent">
             Export CSV
           </a>
         </div>

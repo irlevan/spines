@@ -12,12 +12,15 @@ export default function NavBar() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-line bg-surface">
-      <nav className="mx-auto flex max-w-4xl items-center gap-6 px-6 py-4">
-        <Link href="/" className="font-semibold tracking-tight text-accent">
+    <header className="sticky top-0 z-20 border-b border-line/70 bg-background/80 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-4xl items-center gap-8 px-6 py-4">
+        <Link
+          href="/"
+          className="font-display text-lg font-semibold tracking-tight text-foreground"
+        >
           epiloggd
         </Link>
-        <div className="flex gap-4 text-sm">
+        <div className="flex gap-1 text-sm">
           {LINKS.map((link) => {
             const active =
               link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
@@ -27,8 +30,8 @@ export default function NavBar() {
                 href={link.href}
                 className={
                   active
-                    ? "font-medium text-foreground"
-                    : "text-muted hover:text-foreground"
+                    ? "rounded-full bg-surface-2 px-3 py-1.5 font-medium text-foreground"
+                    : "rounded-full px-3 py-1.5 text-muted transition-colors hover:text-foreground"
                 }
               >
                 {link.label}

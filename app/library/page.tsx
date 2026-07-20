@@ -5,8 +5,13 @@ export default async function LibraryPage() {
   const books = await prisma.book.findMany({ orderBy: { dateAdded: "desc" } });
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="mb-8 text-2xl font-semibold">Library</h1>
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mb-10">
+        <p className="text-xs font-medium uppercase tracking-widest text-subtle">
+          {books.length} {books.length === 1 ? "book" : "books"}
+        </p>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">Library</h1>
+      </div>
       <ShelfView initialBooks={books} />
     </main>
   );
