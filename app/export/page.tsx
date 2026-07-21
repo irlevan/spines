@@ -1,3 +1,5 @@
+import ImportForm from "@/components/ImportForm";
+
 const FORMATS = [
   {
     format: "json",
@@ -16,10 +18,14 @@ export default function ExportPage() {
     <main className="mx-auto max-w-2xl px-6 py-10 sm:py-14">
       <div className="mb-10">
         <p className="text-xs font-medium uppercase tracking-widest text-subtle">Your data</p>
-        <h1 className="font-display text-4xl italic tracking-tight">Export</h1>
+        <h1 className="font-display text-4xl italic tracking-tight">Import &amp; Export</h1>
         <p className="mt-2 text-sm text-muted">
-          Download a full copy of your library, whenever you want it.
+          Bring in a library from another app, or download a full copy of your own.
         </p>
+      </div>
+
+      <div className="mb-10">
+        <ImportForm />
       </div>
 
       <div className="flex flex-col gap-4">

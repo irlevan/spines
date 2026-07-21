@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { resolvePercent, type ProgressUnit } from "@/lib/progress";
 
@@ -39,5 +40,7 @@ export async function POST(request: NextRequest) {
       timestamp: timestamp ? new Date(timestamp) : undefined,
     },
   });
+  revalidatePath("/");
+  revalidatePath(`/book/${bookId}`);
   return NextResponse.json(log, { status: 201 });
 }

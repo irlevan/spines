@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { searchOpenLibrary } from "@/lib/openLibrary";
 
@@ -21,15 +22,19 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { title, author, isbn, coverUrl, pageCount, publisher, format, shelf } = body;
+  const { title, author, isbn, coverUrl, pageCount, publisher, format, shelf, openLibraryKey } =
+    body;
 
   if (!title || !author) {
     return NextResponse.json({ error: "title and author are required" }, { status: 400 });
   }
 
   const book = await prisma.book.create({
-    data: { title, author, isbn, coverUrl, pageCount, publisher, format, shelf },
+    data: { title, author, isbn, coverUrl, pageCount, publisher, format, shelf, openLibraryKey },
   });
+
+  revalidatePath("/");
+  revalidatePath("/library");
 
   return NextResponse.json(book, { status: 201 });
 }

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 const UPDATABLE_FIELDS = [
   "title",
   "author",
   "isbn",
+  "openLibraryKey",
   "coverUrl",
   "pageCount",
   "format",
@@ -54,6 +56,9 @@ export async function PATCH(
 
   try {
     const book = await prisma.book.update({ where: { id }, data });
+    revalidatePath("/");
+    revalidatePath("/library");
+    revalidatePath(`/book/${id}`);
     return NextResponse.json(book);
   } catch {
     return NextResponse.json({ error: "Book not found" }, { status: 404 });
@@ -67,6 +72,8 @@ export async function DELETE(
   const { id } = await params;
   try {
     await prisma.book.delete({ where: { id } });
+    revalidatePath("/");
+    revalidatePath("/library");
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Book not found" }, { status: 404 });

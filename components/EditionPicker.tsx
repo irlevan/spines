@@ -59,7 +59,7 @@ export default function EditionPicker({
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium">{title}</p>
-          <p className="text-xs text-muted">{author} — choose an edition</p>
+          <p className="text-xs text-muted">{author} - choose an edition</p>
         </div>
         <button
           type="button"
@@ -118,7 +118,7 @@ export default function EditionPicker({
                 {edition.publisher ?? "Unknown publisher"}
               </p>
               <p className="font-data text-[11px] text-subtle">
-                {edition.pageCount ? `${edition.pageCount}p` : "—"}
+                {edition.pageCount ? `${edition.pageCount}p` : "-"}
                 {edition.publishDate ? ` · ${edition.publishDate}` : ""}
               </p>
             </button>

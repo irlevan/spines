@@ -41,15 +41,13 @@ export default function DraggableBookCard({
             {...attributes}
             type="button"
             aria-label={`Drag ${book.title} to a different shelf`}
-            className="absolute left-2 top-2 z-[1] touch-none rounded-full bg-surface/80 p-1 text-subtle opacity-0 backdrop-blur-sm transition-opacity hover:text-ribbon focus-visible:opacity-100 group-hover:opacity-100 active:cursor-grabbing"
+            className="flex w-full cursor-grab touch-none items-center justify-center rounded-t-[0.875rem] border-b border-line/70 bg-surface-2/70 py-1.5 text-subtle transition-colors hover:bg-ribbon-soft hover:text-ribbon active:cursor-grabbing"
           >
-            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor">
-              <circle cx="7" cy="6" r="1.2" />
-              <circle cx="13" cy="6" r="1.2" />
-              <circle cx="7" cy="10" r="1.2" />
-              <circle cx="13" cy="10" r="1.2" />
-              <circle cx="7" cy="14" r="1.2" />
-              <circle cx="13" cy="14" r="1.2" />
+            <svg viewBox="0 0 32 8" className="h-2 w-8" fill="currentColor">
+              <circle cx="4" cy="4" r="1.4" />
+              <circle cx="11" cy="4" r="1.4" />
+              <circle cx="18" cy="4" r="1.4" />
+              <circle cx="25" cy="4" r="1.4" />
             </svg>
           </button>
         }

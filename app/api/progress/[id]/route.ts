@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
@@ -17,6 +18,8 @@ export async function PATCH(
       where: { id },
       data: { timestamp: new Date(body.timestamp) },
     });
+    revalidatePath("/");
+    revalidatePath(`/book/${log.bookId}`);
     return NextResponse.json(log);
   } catch {
     return NextResponse.json({ error: "Log not found" }, { status: 404 });

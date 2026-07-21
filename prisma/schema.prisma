@@ -13,12 +13,13 @@ model Book {
   title       String
   author      String
   isbn        String?
+  openLibraryKey String?
   coverUrl    String?
   pageCount   Int?
   publisher   String?
   format      String   @default("physical") // physical | ebook | audiobook
   shelf       String   @default("want_to_read") // want_to_read | reading | read | dnf
-  rating      Int?     // 1-5
+  rating      Float?   // 1-5, in quarter-star increments
   moodTags    String[] @default([])
   paceTag     String?  // fast | medium | slow
   reviewText  String?

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -47,17 +47,38 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
     useSensor(KeyboardSensor)
   );
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  const searchAbortRef = useRef<AbortController | null>(null);
+
+  async function runSearch(q: string) {
+    if (!q.trim()) {
+      setResults([]);
+      return;
+    }
+    searchAbortRef.current?.abort();
+    const controller = new AbortController();
+    searchAbortRef.current = controller;
     setSearching(true);
     try {
-      const res = await fetch(`/api/books?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`/api/books?q=${encodeURIComponent(q)}`, {
+        signal: controller.signal,
+      });
       const data: OpenLibraryResult[] = await res.json();
       setResults(data);
+    } catch (err) {
+      if ((err as Error).name !== "AbortError") throw err;
     } finally {
-      setSearching(false);
+      if (searchAbortRef.current === controller) setSearching(false);
     }
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => runSearch(query), 300);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    runSearch(query);
   }
 
   async function handleSelectEdition(edition: ChosenEdition) {
@@ -73,6 +94,7 @@ export default function ShelfView({ initialBooks }: ShelfViewProps) {
         pageCount: edition.pageCount,
         publisher: edition.publisher,
         shelf: "want_to_read",
+        openLibraryKey: pickingWork.openLibraryKey,
       }),
     });
     const book: Book = await res.json();

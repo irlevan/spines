@@ -2,8 +2,44 @@
 
 import { useRef, useState } from "react";
 import type { Book } from "@prisma/client";
+import RatingStars from "./RatingStars";
 
 const PACE_TAGS = ["fast", "medium", "slow"] as const;
+
+const MOOD_CATEGORIES = [
+  {
+    label: "Mood",
+    tags: [
+      "adventurous",
+      "challenging",
+      "dark",
+      "emotional",
+      "funny",
+      "hopeful",
+      "informative",
+      "inspiring",
+      "lighthearted",
+      "mysterious",
+      "reflective",
+      "relaxing",
+      "sad",
+      "tense",
+    ],
+  },
+  {
+    label: "Vibe",
+    tags: [
+      "page-turner",
+      "slow-burn",
+      "character-driven",
+      "plot-driven",
+      "comfort-read",
+      "gut-wrenching",
+      "thought-provoking",
+      "atmospheric",
+    ],
+  },
+] as const;
 
 interface BookMetaEditorProps {
   book: Book;
@@ -62,6 +98,14 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
     queuePatch({ moodTags: next });
   }
 
+  function toggleMoodTag(tag: string) {
+    const next = moodTags.includes(tag)
+      ? moodTags.filter((t) => t !== tag)
+      : [...moodTags, tag];
+    setMoodTags(next);
+    queuePatch({ moodTags: next });
+  }
+
   function handlePaceTag(value: string) {
     setPaceTag(value);
     queuePatch({ paceTag: value || null });
@@ -110,49 +154,64 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
 
       <div>
         <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Rating</p>
-        <div className="flex gap-0.5">
-          {[1, 2, 3, 4, 5].map((value) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => handleRate(value)}
-              aria-label={`Rate ${value} star${value > 1 ? "s" : ""}`}
-              className={`text-3xl leading-none transition-transform hover:scale-110 ${
-                value <= rating ? "text-ribbon" : "text-line"
-              }`}
-            >
-              ★
-            </button>
-          ))}
-        </div>
+        <RatingStars value={rating} onChange={handleRate} />
       </div>
 
-      <div>
-        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">Mood tags</p>
-        <div className="flex flex-wrap items-center gap-2">
-          {moodTags.map((tag) => (
-            <span
-              key={tag}
-              className="flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-xs"
-            >
-              {tag}
-              <button
-                type="button"
-                onClick={() => removeMoodTag(tag)}
-                aria-label={`Remove ${tag}`}
-                className="text-subtle hover:text-ribbon"
-              >
-                ×
-              </button>
-            </span>
-          ))}
-          <input
-            value={moodInput}
-            onChange={(e) => setMoodInput(e.target.value)}
-            onKeyDown={addMoodTag}
-            placeholder="Add a tag, press Enter"
-            className="input w-40 rounded-full px-3 py-1 text-xs text-foreground"
-          />
+      <div className="flex flex-col gap-4">
+        <p className="text-xs uppercase tracking-wide text-muted">Mood tags</p>
+
+        {MOOD_CATEGORIES.map((category) => (
+          <div key={category.label}>
+            <p className="mb-1.5 text-xs text-subtle">{category.label}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {category.tags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => toggleMoodTag(tag)}
+                  aria-pressed={moodTags.includes(tag)}
+                  className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
+                    moodTags.includes(tag)
+                      ? "border-ribbon bg-ribbon-soft text-ribbon"
+                      : "border-line text-muted hover:border-ribbon hover:text-ribbon"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <p className="mb-1.5 text-xs text-subtle">Personal tags</p>
+          <div className="flex flex-wrap items-center gap-2">
+            {moodTags
+              .filter((tag) => !MOOD_CATEGORIES.some((c) => (c.tags as readonly string[]).includes(tag)))
+              .map((tag) => (
+                <span
+                  key={tag}
+                  className="flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-xs"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeMoodTag(tag)}
+                    aria-label={`Remove ${tag}`}
+                    className="text-subtle hover:text-ribbon"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            <input
+              value={moodInput}
+              onChange={(e) => setMoodInput(e.target.value)}
+              onKeyDown={addMoodTag}
+              placeholder="Add a tag, press Enter"
+              className="input w-40 rounded-full px-3 py-1 text-xs text-foreground"
+            />
+          </div>
         </div>
       </div>
 
@@ -163,7 +222,7 @@ export default function BookMetaEditor({ book }: BookMetaEditorProps) {
           onChange={(e) => handlePaceTag(e.target.value)}
           className="input rounded-lg px-2.5 py-1.5 text-sm text-foreground"
         >
-          <option value="">—</option>
+          <option value="">-</option>
           {PACE_TAGS.map((tag) => (
             <option key={tag} value={tag}>
               {tag}

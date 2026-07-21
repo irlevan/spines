@@ -7,6 +7,7 @@ import ProgressRibbon from "@/components/ProgressRibbon";
 import BookMetaEditor from "@/components/BookMetaEditor";
 import QuotesEditor from "@/components/QuotesEditor";
 import FavoriteButton from "@/components/FavoriteButton";
+import EditionEditor from "@/components/EditionEditor";
 
 export default async function BookDetailPage({
   params,
@@ -59,6 +60,11 @@ export default async function BookDetailPage({
       </div>
 
       <section className="card mt-10 p-6">
+        <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-subtle">Edition</h2>
+        <EditionEditor book={book} />
+      </section>
+
+      <section className="card mt-6 p-6">
         <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-subtle">Progress</h2>
         <ProgressLogger bookId={book.id} initialLogs={book.progressLogs} pageCount={book.pageCount} />
       </section>

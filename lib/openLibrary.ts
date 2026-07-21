@@ -83,3 +83,32 @@ export async function getEditions(workKey: string): Promise<OpenLibraryEdition[]
     }))
     .filter((edition) => edition.coverUrl || edition.pageCount || edition.publisher);
 }
+
+export interface IsbnLookupResult {
+  coverUrl: string | null;
+  pageCount: number | null;
+  publisher: string | null;
+}
+
+interface OpenLibraryIsbnEntry {
+  covers?: number[];
+  number_of_pages?: number;
+  publishers?: string[];
+}
+
+// Best-effort enrichment for imported rows that only carry an ISBN. Returns
+// all-null on any failure so a single bad ISBN can't fail an entire import.
+export async function lookupByIsbn(isbn: string): Promise<IsbnLookupResult> {
+  try {
+    const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
+    if (!res.ok) return { coverUrl: null, pageCount: null, publisher: null };
+    const data: OpenLibraryIsbnEntry = await res.json();
+    return {
+      coverUrl: data.covers?.[0] ? `${COVERS_URL}/${data.covers[0]}-M.jpg` : null,
+      pageCount: data.number_of_pages ?? null,
+      publisher: data.publishers?.[0] ?? null,
+    };
+  } catch {
+    return { coverUrl: null, pageCount: null, publisher: null };
+  }
+}

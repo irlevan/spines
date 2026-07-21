@@ -17,6 +17,9 @@ interface CurrentlyReadingProps {
 
 export default function CurrentlyReading({ books }: CurrentlyReadingProps) {
   const [entries, setEntries] = useState(books);
+  const [units, setUnits] = useState<Record<string, "pages" | "percent">>(() =>
+    Object.fromEntries(books.map((b) => [b.id, b.pageCount ? "pages" : "percent"]))
+  );
 
   async function handleUpdate(bookId: string, unit: "pages" | "percent", value: string) {
     const parsed = Number(value);
@@ -49,7 +52,7 @@ export default function CurrentlyReading({ books }: CurrentlyReadingProps) {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map((book) => {
         const percent = latestProgressPercent(book.progressLogs);
-        const unit: "pages" | "percent" = book.pageCount ? "pages" : "percent";
+        const unit = units[book.id] ?? (book.pageCount ? "pages" : "percent");
         return (
           <div key={book.id} className="card flex gap-4 p-4">
             <div className="relative h-28 w-20 shrink-0 overflow-hidden rounded-md bg-surface-2 shadow-sm">
@@ -78,7 +81,12 @@ export default function CurrentlyReading({ books }: CurrentlyReadingProps) {
                   {book.title}
                 </Link>
                 <p className="line-clamp-1 text-sm text-muted">{book.author}</p>
-                <p className="font-data mt-1 text-xs text-subtle">{Math.round(percent)}% read</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <ProgressRibbon percent={percent} variant="horizontal" className="flex-1" />
+                  <span className="font-data shrink-0 text-xs text-subtle">
+                    {Math.round(percent)}%
+                  </span>
+                </div>
               </div>
 
               <form
@@ -90,8 +98,23 @@ export default function CurrentlyReading({ books }: CurrentlyReadingProps) {
                   handleUpdate(book.id, unit, input.value);
                   input.value = "";
                 }}
-                className="mt-2 flex gap-1.5"
+                className="mt-2 flex items-center gap-1.5"
               >
+                <div className="input flex shrink-0 overflow-hidden rounded-md p-0.5">
+                  {(["pages", "percent"] as const).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setUnits((prev) => ({ ...prev, [book.id]: option }))}
+                      disabled={option === "pages" && !book.pageCount}
+                      className={`rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                        unit === option ? "bg-ribbon text-on-ribbon" : "text-muted"
+                      }`}
+                    >
+                      {option === "pages" ? "Pg" : "%"}
+                    </button>
+                  ))}
+                </div>
                 <input
                   name="value"
                   type="number"
